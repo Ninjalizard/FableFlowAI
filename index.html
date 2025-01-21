@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .settings-panel {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        .story-panel {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .story-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .paragraph {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .user-input-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            display: none;
+        }
+        .settings-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel - Story Settings -->
+        <div class="settings-panel">
+            <div class="settings-title">Story Settings</div>
+            <div class="form-group">
+                <label for="genre">Genre:</label>
+                <select id="genre">
+                    <option value="fantasy">Fantasy</option>
+                    <option value="science fiction">Science Fiction</option>
+                    <option value="mystery">Mystery</option>
+                    <option value="romance">Romance</option>
+                    <option value="horror">Horror</option>
+                    <option value="adventure">Adventure</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="style">Writing Style:</label>
+                <select id="style">
+                    <option value="descriptive">Descriptive</option>
+                    <option value="concise">Concise</option>
+                    <option value="humorous">Humorous</option>
+                    <option value="dramatic">Dramatic</option>
+                    <option value="poetic">Poetic</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type">Story Type:</label>
+                <select id="type">
+                    <option value="hero's journey">Hero's Journey</option>
+                    <option value="slice of life">Slice of Life</option>
+                    <option value="quest">Quest</option>
+                    <option value="coming of age">Coming of Age</option>
+                    <option value="thriller">Thriller</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="prompt">Initial Story Prompt:</label>
+                <textarea id="prompt" rows="4" placeholder="Enter the beginning of your story..."></textarea>
+            </div>
+            <button onclick="startStory()" id="start-btn">Start Story</button>
+            <button onclick="resetStory()" id="reset-btn" style="background-color: #dc3545;">Start New Story</button>
+        </div>
+
+        <!-- Right Panel - Story Display -->
+        <div class="story-panel">
+            <div class="story-content" id="story"></div>
+            <div id="loading" class="loading">Generating next paragraph...</div>
+            <div class="user-input-section">
+                <div class="form-group">
+                    <label for="user-input">What happens next?</label>
+                    <textarea id="user-input" rows="3" placeholder="Enter your suggestion for the next paragraph..."></textarea>
+                </div>
+                <button onclick="continueStory()" id="continue-btn">Continue Story</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let storyParagraphs = [];
+        let storySettings = {};
+
+        async function startStory() {
+            const prompt = document.getElementById('prompt').value;
+            if (!prompt) {
+                alert('Please enter an initial story prompt');
+                return;
+            }
+
+            // Save story settings
+            storySettings = {
+                genre: document.getElementById('genre').value,
+                style: document.getElementById('style').value,
+                type: document.getElementById('type').value
+            };
+
+            // Reset story and start new one
+            storyParagraphs = [];
+            document.getElementById('story').innerHTML = '';
+            await generateParagraph(prompt);
+            
+            // Enable/disable appropriate controls
+            document.getElementById('prompt').disabled = true;
+            document.getElementById('genre').disabled = true;
+            document.getElementById('style').disabled = true;
+            document.getElementById('type').disabled = true;
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('continue-btn').disabled = false;
+        }
+
+        async function continueStory() {
+            const userInput = document.getElementById('user-input').value;
+            if (!userInput) {
+                alert('Please enter your suggestion for the next paragraph');
+                return;
+            }
+
+            await generateParagraph(null, userInput);
+            document.getElementById('user-input').value = '';
+        }
+
+        async function generateParagraph(prompt = null, userInput = null) {
+            const loadingDiv = document.getElementById('loading');
+            const storyDiv = document.getElementById('story');
+            
+            loadingDiv.style.display = 'block';
+            document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+
+            try {
+                const response = await axios.post('http://localhost:8000/generate-paragraph', {
+                    prompt: prompt,
+                    genre: storySettings.genre,
+                    style: storySettings.style,
+                    type: storySettings.type,
+                    previous_paragraphs: storyParagraphs,
+                    user_input: userInput
+                });
+
+                const newParagraph = response.data.paragraph;
+                storyParagraphs.push(newParagraph);
+
+                const paragraphDiv = document.createElement('div');
+                paragraphDiv.className = 'paragraph';
+                paragraphDiv.textContent = newParagraph;
+                storyDiv.appendChild(paragraphDiv);
+
+                // Scroll to the bottom of the story
+                storyDiv.scrollTop = storyDiv.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating story. Please try again.');
+            } finally {
+                loadingDiv.style.display = 'none';
+                document.getElementById('continue-btn').disabled = false;
+                document.getElementById('reset-btn').disabled = false;
+            }
+        }
+
+        function resetStory() {
+            // Reset all variables and form elements
+            storyParagraphs = [];
+            storySettings = {};
+            document.getElementById('story').innerHTML = '';
+            document.getElementById('prompt').value = '';
+            document.getElementById('user-input').value = '';
+            
+            // Re-enable all controls
+            document.getElementById('prompt').disabled = false;
+            document.getElementById('genre').disabled = false;
+            document.getElementById('style').disabled = false;
+            document.getElementById('type').disabled = false;
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('continue-btn').disabled = true;
+        }
+
+        // Initialize the page
+        document.getElementById('user-input').disabled = true;
+        document.getElementById('continue-btn').disabled = true;
+    </script>
+</body>
+</html>
