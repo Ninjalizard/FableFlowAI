@@ -17,7 +17,7 @@ app.add_middleware(
 # Use environment variable for API key, or replace with your key directly
 # Note, replace "your-api-key-here" with os.environ.get("OPENAI_API_KEY")
 #client = AsyncOpenAI(api_key="<PUT OPENAI KEY HERE>")
-client = AsyncOpenAI(api_key="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")
+client = AsyncOpenAI(api_key="")
 class StoryRequest(BaseModel):
     prompt: Optional[str]
     genre: str
