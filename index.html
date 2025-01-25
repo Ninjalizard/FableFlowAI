@@ -215,6 +215,17 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="setting">Story Setting:</label>
+                <select id="setting">
+                    <option value="forest">Forest</option>
+                    <option value="space station">Space Station</option>
+                    <option value="medieval castle">Medieval Castle</option>
+                    <option value="desert oasis">Desert Oasis</option>
+                    <option value="modern city">Modern City</option>
+                    <option value="underwater world">Underwater World</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="prompt">Initial Story Prompt:</label>
                 <textarea id="prompt" rows="4" placeholder="Enter the beginning of your story..."></textarea>
             </div>
@@ -251,7 +262,8 @@
             storySettings = {
                 genre: document.getElementById('genre').value,
                 style: document.getElementById('style').value,
-                type: document.getElementById('type').value
+                type: document.getElementById('type').value,
+                setting: document.getElementById('setting').value
             };
 
             // Reset story and start new one
@@ -264,6 +276,7 @@
             document.getElementById('genre').disabled = true;
             document.getElementById('style').disabled = true;
             document.getElementById('type').disabled = true;
+            document.getElementById('setting').disabled = true;
             document.getElementById('start-btn').disabled = true;
             document.getElementById('user-input').disabled = false;
             document.getElementById('continue-btn').disabled = false;
@@ -330,6 +343,7 @@
             document.getElementById('genre').disabled = false;
             document.getElementById('style').disabled = false;
             document.getElementById('type').disabled = false;
+            document.getElementById('setting').disabled = false;
             document.getElementById('start-btn').disabled = false;
             document.getElementById('user-input').disabled = true;
             document.getElementById('continue-btn').disabled = true;
