@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Generator</title>
+    <title>AI Story Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             height: 100vh;
-            background-color: #f5f5f5;
+            background: linear-gradient(120deg, #84fab0, #8fd3f4);
+            color: #333;
         }
         .container {
             display: flex;
             height: 100vh;
         }
         .settings-panel {
-            width: 300px;
-            background-color: white;
+            width: 320px;
+            background-color: #fff;
             padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
             overflow-y: auto;
         }
         .story-panel {
@@ -29,7 +30,9 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            background-color: #f9f9f9;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-left: 3px solid #84fab0;
         }
         .form-group {
             margin-bottom: 20px;
@@ -38,30 +41,40 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #333;
+            font-size: 0.9em;
+            color: #555;
         }
         select, input, textarea {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 0.9em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        select:focus, input:focus, textarea:focus {
+            border-color: #84fab0;
         }
         button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
+            background: linear-gradient(90deg, #84fab0, #8fd3f4);
+            color: #fff;
+            font-weight: bold;
+            padding: 12px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
             margin-bottom: 10px;
+            font-size: 0.9em;
+            transition: background 0.3s;
         }
         button:hover:not(:disabled) {
-            background-color: #0056b3;
+            background: linear-gradient(90deg, #8fd3f4, #84fab0);
         }
         button:disabled {
-            background-color: #ccc;
+            background: #ddd;
             cursor: not-allowed;
         }
         .story-content {
@@ -69,21 +82,22 @@
             overflow-y: auto;
             margin-bottom: 20px;
             padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .paragraph {
             margin-bottom: 20px;
-            line-height: 1.6;
+            line-height: 1.8;
             padding: 10px;
             border-bottom: 1px solid #eee;
+            font-size: 1.1em;
         }
         .user-input-section {
-            background-color: white;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
         }
         .loading {
             text-align: center;
@@ -97,12 +111,20 @@
             color: #333;
             text-align: center;
         }
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #84fab0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Left Panel - Story Settings -->
         <div class="settings-panel">
+            <div class="logo">AI Story Generator</div>
             <div class="settings-title">Story Settings</div>
             <div class="form-group">
                 <label for="genre">Genre:</label>
@@ -140,7 +162,7 @@
                 <textarea id="prompt" rows="4" placeholder="Enter the beginning of your story..."></textarea>
             </div>
             <button onclick="startStory()" id="start-btn">Start Story</button>
-            <button onclick="resetStory()" id="reset-btn" style="background-color: #dc3545;">Start New Story</button>
+            <button onclick="resetStory()" id="reset-btn" style="background: #ff6b6b;">Start New Story</button>
         </div>
 
         <!-- Right Panel - Story Display -->
