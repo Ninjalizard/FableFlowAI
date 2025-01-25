@@ -118,8 +118,65 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        .navbar {
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 10;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; /* Aligns the logo and the navbar items */
+            align-items: center; 
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            margin-top: 5px;
+            padding: 5px 10px;
+            display: flex;
+            border-radius: 8px;
+            border: 2px solid rgba(0, 0, 0, .5);
+            text-decoration: none;
+            font-size: larger;
+            color: #555;
+            font-weight: bold;
+            transition: color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .navbar ul li a.active, .navbar ul li a:hover {
+            color: #84fab0;
+        }
+        .navbar .logo img {
+            height: 50px; /* Adjust the size of the logo */
+            width: auto;
+            margin-left: 40px;
+            border-radius: 8px;
+        }
     </style>
 </head>
+<header class="navbar">
+    <nav>
+        <ul>
+            <li class="logo"><img src="logo.png" alt="Logo"></li>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="aboutus.html">About</a></li>
+            <li><a href="contact.html">Login</a></li>
+        </ul>
+    </nav>
+</header>
 <body>
     <div class="container">
         <!-- Left Panel - Story Settings -->
