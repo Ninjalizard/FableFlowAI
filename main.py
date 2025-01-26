@@ -34,8 +34,7 @@ async def generate_paragraph(request: StoryRequest):
         story_context = "\n\n".join(request.previous_paragraphs)
 
         # Create system prompt with story parameters
-        system_prompt = f"You are a creative writer specializing in {request.genre} stories. Write in a {request.style} style, following the {request.type} story structure. You tell stories about 
-        things that take place in a {request.setting}."
+        system_prompt = f"You are a creative writer specializing in {request.genre} stories. Write in a {request.style} style, following the {request.type} story structure. You tell stories about things that take place in a {request.setting}."
 
         # Create user prompt based on whether this is the first paragraph or a continuation
         if not request.previous_paragraphs:
