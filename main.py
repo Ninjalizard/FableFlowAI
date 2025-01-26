@@ -34,7 +34,7 @@ async def generate_paragraph(request: StoryRequest):
         story_context = "\n\n".join(request.previous_paragraphs)
 
         # Create system prompt with story parameters
-        system_prompt = f"You are a creative writer specializing in {request.genre} stories. Write in a {request.style} style, following the {request.type} story structure. You tell stories about things that take place in a {request.setting}."
+        system_prompt = f"You are a creative writer specializing in {request.genre} stories. Write in a {request.style} style, following the {request.type} story structure. You can tell stories about things that take place in a {request.setting}."
 
         # Create user prompt based on whether this is the first paragraph or a continuation
         if not request.previous_paragraphs:
@@ -62,6 +62,48 @@ Write exactly one paragraph continuing the story, incorporating the user's sugge
 
         return {
             "paragraph": new_paragraph,
+            "status": "success"
+        }
+    except OpenAIError as e:
+        raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/conclude-story")
+async def conclude_story(request: StoryRequest):
+    try:
+        # Build the context from previous paragraphs
+        story_context = "\n\n".join(request.previous_paragraphs)
+
+        # Create system prompt for story conclusion
+        system_prompt = f"You are a creative writer specializing in {request.genre} stories. Write a compelling story conclusion in a {request.style} style, wrapping up the {request.type} story that takes place in a {request.setting}."
+
+        # Create user prompt for the conclusion
+        user_prompt = f"""Previous story so far:
+
+{story_context}
+
+Write a final, concluding paragraph that:
+1. Provides a satisfying resolution to the story.
+2. Reflects the established {request.style} writing style.
+3. Ties together the key themes and plot points.
+4. Leaves a lasting impression on the reader."""
+
+        response = await client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            max_tokens=500,
+            temperature=0.7
+        )
+
+        conclusion_paragraph = response.choices[0].message.content.strip()
+
+        return {
+            "paragraph": conclusion_paragraph,
             "status": "success"
         }
     except OpenAIError as e:
