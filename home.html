@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage - Story Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap');
+
+        @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+        }
+
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+         }
+        
+        .navbar {
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 10;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; /* Aligns the logo and the navbar items */
+            align-items: center; 
+            border-radius: 8px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            margin-top: 5px;
+            padding: 5px 10px;
+            display: flex;
+            border-radius: 8px;
+            border: 2px solid #F3E9D2;
+            text-decoration: none;
+            font-size: larger;
+            color: #1A936F;
+            transition: color 0.2s;
+            box-sizing: border-box;
+            font-family: "DM Serif Text", serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .navbar ul li a.active  {
+            color: #88D498;
+        }
+
+        .navbar ul li a:hover {
+            color: #88D498;
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar .logo img {
+            height: 50px; /* Adjust the size of the logo */
+            width: auto;
+            margin-left: 40px;
+            border-radius: 8px;
+        }
+        
+        .section {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .container {
+            width: 85%;
+            display: block;
+            margin: auto; 
+            height: 50%;  
+        }
+
+        .Introduction {
+            float: left;
+            width: 35%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .Introduction .title h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 27%;
+            font-size: 50px;
+        }
+
+        .Introduction .explanation p {
+            margin-top: 20px;
+            line-height: 25px;
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 12px 30px; 
+            background-color: #1A936F; 
+            color: #fff; 
+            border-radius: 8px; 
+            font-size: 18px; 
+            font-family: "DM Serif Text", serif; 
+            font-weight: 400; 
+            text-decoration: none;
+            display: inline-block; 
+            text-align: center; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        }
+
+        .button:hover {
+            background-color: #88D498; 
+            color: #fff; 
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+        }
+
+        .question-section-title{
+            margin-top: 150px;
+            text-transform: uppercase;
+            font-size: 25px;
+            justify-content: flex-end;
+            white-space: nowrap;
+            font-family: "DM Serif Text", serif;
+            font-weight: 400;
+        }
+        
+        .container .question-section{
+            margin-top: 50px;
+            justify-content: center;
+            display: flex;
+            gap: 100px;
+            width: 150%;
+            margin-left: 60%;
+
+        }
+
+        .flipButton {
+            width: 300px;
+            height: 200px;
+            perspective: 1200px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px;
+            flex-shrink: 0;
+            border-radius: 16px 
+        }
+
+        .question-content {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            font-family: "DM Serif Text", serif; 
+            font-weight: 400; 
+        }
+
+        .front {
+            background: #1A936F;
+            color: white;
+        }
+
+        .back {
+            background: #88D498;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .front p{
+            width: 85%;
+        }
+        
+        .back p{
+            width: 85%;
+        }
+        
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <nav>
+            <ul>
+                <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
+                <li><a href="home.html" class="active">Home</a></li>
+                <li><a href="index.html">Create</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="section">
+        <div class="container">
+            <div class="Introduction">
+                <div class="title"><h1>Welcome to <br> FableFlowAI, the story generator!</h1></div>
+                <div class="explanation">
+                    <p>FableFlowAI is the next step in AI entertainment and provides an immersisve experience like no other.
+                    Our website gives the users ability to create their own AI stories right from their own device! To 
+                    get started click the button below our click "create" on our navigation bar! If you want to learn more
+                    about FableFlowAI click "about" and if you want to create or login to your account press "Login" in our
+                    navigation bar! 
+                    </p>
+                </div>
+                <a href="index.html" class="button">Get Started!</a>
+                <div class="question-section-title"><h1>How well do you know FableFLowAI?</h1></div>
+                <div class="question-section">
+                    <div class="flipButton" onclick="flipCard(this)">
+                        <div class="question-content">
+                            <div class="front"><p>How to access our create a story function?</p></div>
+                            <div class="back"><p>By clicking the "Create" tab in our navbar or the "Get Started" button in our home page!</p></div>
+                        </div>
+                    </div>
+                
+                    <div class="flipButton" onclick="flipCard(this)">
+                        <div class="question-content">
+                            <div class="front"><p>How to learn more about FableFlowAI?</p></div>
+                            <div class="back"><p>By clicking the "About" tab in our navbar!</p></div>
+                        </div>
+                    </div>
+                
+                    <div class="flipButton" onclick="flipCard(this)">
+                        <div class="question-content">
+                            <div class="front"><p>What book series is FableFlowAI inspired from?</p></div>
+                            <div class="back"><p>The "Choose Your Own Adventure" series!</p></div>
+                        </div>
+                    </div>
+                    <div class="flipButton" onclick="flipCard(this)">
+                        <div class="question-content">
+                            <div class="front"><p>How many developers are in FableFlowAI's dev team?</p></div>
+                            <div class="back"><p>Three!</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>    
+    </div>  
+
+    <script>
+        function flipCard(element) {
+            element.querySelector('.question-content').classList.toggle('flipped');
+        }
+    </script>
+</body>
+</html>
