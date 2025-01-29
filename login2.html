@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoginPageFBLA</title>
+    <link rel="stylesheet" href="login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+    <header class="navbar">
+    <nav>
+        <ul>
+            <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="index.html">Create</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="login2.html"  class="active">Login</a></li>
+        </ul>
+    </nav>
+    </header>
+    <div class="section">
+        <div class="login-container">
+            <form action="">
+                <h1>Login</h1>
+                <div class="input_box">
+                    <input type="text" placeholder="Email Address" required id="txtEmail">
+                    <i class='bx bxs-user'></i>
+                </div>
+                    <div class="input_box">
+                    <input type="password" placeholder="Password" required id="txtPassword">
+                    <i class='bx bxs-lock-alt' ></i>
+                </div>
+
+                <button type="submit" class="btn" id="btnLogin">Login</button>
+
+                <div class="register-link">
+                    <p>Don't have an account? <a href="login.html">Register</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+        const firebaseConfig = {
+        databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
+        apiKey: "AIzaSyAmsfc1mzHAXLzlXBDelaXojZQ4hgoKGvo",
+        authDomain: "fbla-5997a.firebaseapp.com",
+        projectId: "fbla-5997a",
+        storageBucket: "fbla-5997a.firebasestorage.app",
+        messagingSenderId: "706944120459",
+        appId: "1:706944120459:web:2cc209b960b57ffd4ec68e",
+        measurementId: "G-PY91HMPW58"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase();
+        const storyRef = ref(db, 'story');
+        const newStoryRef = push(storyRef);
+        export const auth = getAuth(app);
+
+
+        const submit = document.getElementById('btnLogin');
+        submit.addEventListener("click", function(event) {
+            const email = document.getElementById('txtEmail').value;
+            const password = document.getElementById('txtPassword').value;
+            event.preventDefault()
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                // Logged in
+                const user = userCredential.user;
+                alert("Logged in successfully")
+                document.getElementById('txtEmail').value='';
+                document.getElementById('txtPassword').value='';
+                document.location.href = 'index.html', true;
+                return false;
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(errorMessage)
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,19 +1,18 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+body {
     font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(120deg, #84fab0, #8fd3f4);
+    color: #333;
 }
+
 .navbar {
     background: #fff;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
-    top: 10;
+    top: 0;
     z-index: 1000;
-    display: flex;
-    justify-content: space-between; /* Aligns the logo and the navbar items */
-    align-items: center; 
 }
 
 .navbar ul {
@@ -29,112 +28,61 @@
 }
 
 .navbar ul li a {
-    margin-top: 5px;
-    padding: 5px 10px;
-    display: flex;
-    border-radius: 8px;
-    border: 2px solid rgba(0, 0, 0, .5);
     text-decoration: none;
-    font-size: larger;
     color: #555;
     font-weight: bold;
     transition: color 0.3s;
-    box-sizing: border-box;
 }
 
-.navbar ul li a.active, .navbar ul li a:hover {
+.navbar ul li a.active,
+.navbar ul li a:hover {
     color: #84fab0;
 }
 
-.navbar .logo img {
-    height: 50px; /* Adjust the size of the logo */
-    width: auto;
-    margin-left: 40px;
-    border-radius: 8px;
-}
-.section {
-    width: 100%;
-    min-height: 100vh;
-    background-color: #ddd;
+.content {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.container {
-    width: 85%;
-    display: block;
-    margin: auto;
-    padding-top: 20px;
-}
-
-.section-content {
-    float: left;
-    width: 55%;
-}
-
-.image {
-    float: right;
-    width: 40%;
-}
-
-.image img{
-    width: 100%;
-    height: auto;
-}
-
-.section-content .title {
-    text-transform: uppercase;
-    font-size: 50px;
-}
-
-.section-content .text h3{
-    margin-top: 36px;
-    text-transform: uppercase;
-    font-size: 29px;
-}
-
-.section-content .text p {
-    font-size: 25px;
-    margin-top: 18px;
-    font-family: sans-serif;
-    line-height: 1.5;
-}
-
-.section-content .contact h2 {
-    margin-top: 18px;
-    font-size: 50px;
-}
-
-.section-content .mail {
+form {
     display: flex;
-    align-content: center;
+    flex-direction: column;
 }
 
-.section-content .mail i {
-    margin-top: 10px;
-    font-size: 50px;
+.form-group {
+    margin-bottom: 15px;
 }
 
-.section-content .mail p {
-    margin: 0;
-    margin-left: 7px;
-    margin-top: 24px;
-    font-size: 20px;
-    font-family: sans-serif;
-    font-weight: 600;
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
 }
 
-@media screen and (max-width: 768px){
-    .container {
-        width: 85%;
-        display: block;
-        margin: auto;
-        padding-top: 20px;
-    }
-.section-content {
-        float: none;
-        width: 100%;
-}
-.image {
-    float: none;
+input,
+textarea,
+button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+    margin-bottom: 10px;
 }
+
+button {
+    background: linear-gradient(90deg, #84fab0, #8fd3f4);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+
+button:hover {
+    background: linear-gradient(90deg, #8fd3f4, #84fab0);
 }

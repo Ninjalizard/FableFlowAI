@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,13 @@
     </style>
     <style>
         @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         body {
@@ -21,17 +27,20 @@
             background: linear-gradient(120deg, #84fab0, #8fd3f4);
             color: #333;
         }
+
         .container {
             display: flex;
             height: 100vh;
         }
+
         .settings-panel {
             width: 320px;
             background-color: #fff;
             padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
         }
+
         .story-panel {
             flex-grow: 1;
             padding: 20px;
@@ -41,9 +50,11 @@
             backdrop-filter: blur(10px);
             border-left: 3px solid #84fab0;
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -52,7 +63,10 @@
             color: #555;
             animation: fadeIn 0.5s ease-in-out;
         }
-        select, input, textarea {
+
+        select,
+        input,
+        textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -63,9 +77,13 @@
             transition: border-color 0.3s;
             animation: fadeIn 0.5s ease-in-out;
         }
-        select:focus, input:focus, textarea:focus {
+
+        select:focus,
+        input:focus,
+        textarea:focus {
             border-color: #84fab0;
         }
+
         button {
             background: linear-gradient(90deg, #84fab0, #8fd3f4);
             color: #fff;
@@ -80,13 +98,16 @@
             transition: background 0.3s;
             animation: fadeIn 0.5s ease-in-out;
         }
+
         button:hover:not(:disabled) {
             background: linear-gradient(90deg, #8fd3f4, #84fab0);
         }
+
         button:disabled {
             background: #ddd;
             cursor: not-allowed;
         }
+
         .story-content {
             flex-grow: 1;
             overflow-y: auto;
@@ -94,9 +115,10 @@
             padding: 20px;
             background-color: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.5s ease-in-out;
         }
+
         .paragraph {
             margin-bottom: 20px;
             line-height: 1.8;
@@ -105,19 +127,22 @@
             font-size: 1.1em;
             animation: fadeIn 0.5s ease-in-out;
         }
+
         .user-input-section {
             background-color: #fff;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.5s ease-in-out;
         }
+
         .loading {
             text-align: center;
             color: #666;
             padding: 20px;
             display: none;
         }
+
         .settings-title {
             font-size: 1.5em;
             margin-bottom: 20px;
@@ -125,6 +150,7 @@
             text-align: center;
             animation: fadeIn 0.5s ease-in-out;
         }
+
         .logo {
             font-size: 1.8em;
             font-weight: bold;
@@ -133,6 +159,7 @@
             margin-bottom: 20px;
             animation: fadeIn 0.5s ease-in-out;
         }
+
         .navbar {
             background: #fff;
             padding: 10px 20px;
@@ -141,10 +168,11 @@
             top: 10;
             z-index: 1000;
             display: flex;
-            justify-content: space-between; /* Aligns the logo and the navbar items */
-            align-items: center; 
+            justify-content: space-between;
+            /* Aligns the logo and the navbar items */
+            align-items: center;
             border-radius: 8px;
-}
+        }
 
         .navbar ul {
             list-style: none;
@@ -171,10 +199,9 @@
             box-sizing: border-box;
             font-family: "DM Serif Text", serif;
             font-weight: 400;
-            font-style: italic;
         }
 
-        .navbar ul li a.active  {
+        .navbar ul li a.active {
             color: #88D498;
         }
 
@@ -185,24 +212,26 @@
         }
 
         .navbar .Logo img {
-            height: 50px; /* Adjust the size of the logo */
+            height: 50px;
+            /* Adjust the size of the logo */
             width: auto;
             margin-left: 40px;
             border-radius: 8px;
-        }       
+        }
     </style>
 </head>
 <header class="navbar">
     <nav>
         <ul>
-            <li class="Logo"><img src="logo.png" alt="Logo"></li>
+            <li class="Logo"><img src="websiteLogo.png" alt="Logo"></li>
             <li><a href="home.html">Home</a></li>
             <li><a href="index.html" class="active">Create</a></li>
-            <li><a href="aboutus.html">About</a></li>
-            <li><a href="Login.html">Login</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="login.html">Login</a></li>
         </ul>
     </nav>
 </header>
+
 <body>
     <div class="container">
         <!-- Left Panel - Story Settings -->
@@ -266,7 +295,8 @@
             <div class="user-input-section">
                 <div class="form-group">
                     <label for="user-input">What happens next?</label>
-                    <textarea id="user-input" rows="3" placeholder="Enter your suggestion for the next paragraph..."></textarea>
+                    <textarea id="user-input" rows="3"
+                        placeholder="Enter your suggestion for the next paragraph..."></textarea>
                 </div>
                 <button onclick="continueStory()" id="continue-btn">Continue Story</button>
                 <button onclick="endStory()" id="end-btn" style="background: #ffa500;">End Story</button>
@@ -297,6 +327,7 @@
             storyParagraphs = [];
             document.getElementById('story').innerHTML = '';
             await generateParagraph(prompt);
+            addStoryFromModule();
 
             // Enable/disable appropriate controls
             document.getElementById('prompt').disabled = true;
@@ -318,6 +349,7 @@
             }
 
             await generateParagraph(null, userInput);
+            continueStoryFromModule();
             document.getElementById('user-input').value = '';
             document.getElementById('end-btn').disabled = false
         }
@@ -361,7 +393,7 @@
                 paragraphDiv.textContent = newParagraph;
                 paragraphDiv.id = 'newText';
                 storyDiv.appendChild(paragraphDiv);
-                addStoryFromModule();
+
 
                 // Scroll to the bottom of the story
                 storyDiv.scrollTop = storyDiv.scrollHeight;
@@ -439,35 +471,54 @@
     </script>
     <script type="module">
         window.addStoryFromModule = addStory;
+        window.continueStoryFromModule = continueStory;
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
-        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
         const firebaseConfig = {
-        databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
-        apiKey: "AIzaSyAmsfc1mzHAXLzlXBDelaXojZQ4hgoKGvo",
-        authDomain: "fbla-5997a.web.app",
-        projectId: "fbla-5997a",
-        storageBucket: "fbla-5997a.firebasestorage.app",
-        messagingSenderId: "706944120459",
-        appId: "1:706944120459:web:2cc209b960b57ffd4ec68e",
-        measurementId: "G-PY91HMPW58"
+            databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
+            apiKey: "AIzaSyAmsfc1mzHAXLzlXBDelaXojZQ4hgoKGvo",
+            authDomain: "fbla-5997a.web.app",
+            projectId: "fbla-5997a",
+            storageBucket: "fbla-5997a.firebasestorage.app",
+            messagingSenderId: "706944120459",
+            appId: "1:706944120459:web:2cc209b960b57ffd4ec68e",
+            measurementId: "G-PY91HMPW58"
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase();
         const storyRef = ref(db, 'story');
         const newStoryRef = push(storyRef);
+        const auth = getAuth();
+        const paragraphRef = ref(db, 'story/' + newStoryRef.key + '/paragraph');
 
-        function addStory(){
+
+
+        function addStory() {
             set(newStoryRef, {
                 genre: document.getElementById('genre').value,
                 style: document.getElementById('style').value,
                 type: document.getElementById('type').value,
                 input: document.getElementById('prompt').value,
-                paragraph: document.getElementById('newText').textContent
+                paragraph: document.getElementById('newText').textContent,
+                uid: auth.currentUser.uid
+            });
+            //console.log(auth.currentUser.uid);
+
+        }
+
+        function continueStory() {
+            onValue(paragraphRef, (snapshot) => {
+                const data = snapshot.val();
+                console.log(data);
+                console.log(document.getElementById('newText').textContent);
+                //updateStarCount(postElement, data);
             });
         }
+
     </script>
 </body>
+
 </html>
