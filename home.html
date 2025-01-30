@@ -218,6 +218,58 @@
             border-radius: 12px;
         }
 
+        .navbar-account{
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    margin-left: auto; 
+    margin-bottom: 50px;
+}
+
+
+.navbar-account a{
+    margin-top: 5px;
+    padding: 5px 10px;
+    display: flex;
+    border-radius: 8px;
+    border: 2px solid #F3E9D2;
+    text-decoration: none;
+    font-size: larger;
+    color: #1A936F;
+    transition: color 0.2s;
+    box-sizing: border-box;
+    font-family: "DM Serif Text", serif;
+    font-weight: 400;
+}
+
+    .navbar-account a.active{
+        color: #88D498;
+    }
+
+    .navbar-account a:hover{
+        color: #88D498;
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .auth-btn {
+        position: absolute;
+        text-align: center;
+        display: flex;
+        margin-left: 50%;
+    }
+
+    .navbar-account #logOutPage {
+        display: none;
+    }
+
+    .navbar-account #loginPage {
+        display: none;
+    }
+
         
     </style>
 </head>
@@ -229,9 +281,12 @@
                 <li><a href="home.html" class="active">Home</a></li>
                 <li><a href="index.html">Create</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="login2.html">Login</a></li>
             </ul>
         </nav>
+        <div class="navbar-account">
+            <a href="login2.html" id="loginPage"  class="auth-btn">Login</a>
+            <a href="home.html" onclick="" id="logOutPage"  class="auth-btn">Logout</a>
+        </div>
     </header>
     <div class="section">
         <div class="container">
@@ -265,13 +320,13 @@
                     <div class="flipButton" onclick="flipCard(this)"> 
                         <div class="question-content">
                             <div class="front"><p>How can you create an account or login?</p></div> 
-                            <div class="back"><p>By pressing the "Account" button on our navbar!</p></div>
+                            <div class="back"><p>By pressing the "Login" button on our navbar!</p></div>
                         </div>
                     </div>
                     <div class="flipButton" onclick="flipCard(this)"> 
                         <div class="question-content">
                             <div class="front"><p>What are the benefits of creating an account with FableFlowAI?</p></div> 
-                            <div class="back"><p>Stories that you create can be saved under your account in our database!</p></div> 
+                            <div class="back"><p>Access the story generator and your stories that you create can be saved under your account in our database!</p></div> 
                         </div>
                     </div>
                 </div>
@@ -285,6 +340,47 @@
     <script>
         function flipCard(element) {
             element.querySelector('.question-content').classList.toggle('flipped'); // rotates element 180 degrees when called 
+        }
+    </script>
+    <script type="module">
+        window.signOutUserFromModule = signOutUser;
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
+            apiKey: "AIzaSyAmsfc1mzHAXLzlXBDelaXojZQ4hgoKGvo",
+            authDomain: "fbla-5997a.web.app",
+            projectId: "fbla-5997a",
+            storageBucket: "fbla-5997a.firebasestorage.app",
+            messagingSenderId: "706944120459",
+            appId: "1:706944120459:web:2cc209b960b57ffd4ec68e",
+            measurementId: "G-PY91HMPW58"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(auth.currentUser);
+                document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('logOutPage').style.display = 'block';
+            } else {
+                console.log(auth.currentUser);
+                document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+                document.getElementById('loginPage').style.display = 'block';
+                document.getElementById('logOutPage').style.display = 'none';
+            }
+        });
+
+        function signOutUser() {
+            signOut(auth).then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
+            });
         }
     </script>
 </body>

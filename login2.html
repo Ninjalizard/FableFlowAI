@@ -10,15 +10,19 @@
 </head>
 <body>
     <header class="navbar">
-    <nav>
-        <ul>
-            <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="index.html">Create</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="login2.html"  class="active">Login</a></li>
-        </ul>
-    </nav>
+        <nav>
+            <ul>
+                <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="index.html">Create</a></li>
+                <li><a href="about.html">About</a></li>
+    
+            </ul>
+        </nav>
+        <div class="navbar-account">
+            <!-- <a href="login2.html" id="loginPage" class="auth-btn">Login</a>
+            <a href="home.html" onclick="signOutUserFromModule()" id="logOutPage" class="auth-btn">Logout</a> -->
+        </div>
     </header>
     <div class="section">
         <div class="login-container">
@@ -77,6 +81,7 @@
                 alert("Logged in successfully")
                 document.getElementById('txtEmail').value='';
                 document.getElementById('txtPassword').value='';
+                console.log(auth.currentUser);
                 document.location.href = 'index.html', true;
                 return false;
             })

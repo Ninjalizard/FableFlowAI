@@ -151,7 +151,7 @@
             animation: fadeIn 0.5s ease-in-out;
         }
 
-        .logo {
+        .Logo {
             font-size: 1.8em;
             font-weight: bold;
             color: #84fab0;
@@ -169,7 +169,6 @@
             z-index: 1000;
             display: flex;
             justify-content: space-between;
-            /* Aligns the logo and the navbar items */
             align-items: center;
             border-radius: 8px;
         }
@@ -211,32 +210,88 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .navbar .Logo img {
+        .navbar .logo img {
             height: 50px;
             /* Adjust the size of the logo */
             width: auto;
             margin-left: 40px;
             border-radius: 8px;
         }
+
+        .navbar-account{
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            margin-left: auto; 
+            margin-bottom: 50px;
+        }
+        
+
+        .navbar-account a{
+            margin-top: 5px;
+            padding: 5px 10px;
+            display: flex;
+            border-radius: 8px;
+            border: 2px solid #F3E9D2;
+            text-decoration: none;
+            font-size: larger;
+            color: #1A936F;
+            transition: color 0.2s;
+            box-sizing: border-box;
+            font-family: "DM Serif Text", serif;
+            font-weight: 400;
+        }
+
+        .navbar-account a.active{
+            color: #88D498;
+        }
+
+        .navbar-account a:hover{
+            color: #88D498;
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .auth-btn {
+            position: absolute;
+            text-align: center;
+            display: flex;
+            margin-left: 50%;
+        }
+
+        .navbar-account #logOutPage{
+            display: none;
+        }
+
+            
+
+        
     </style>
 </head>
 <header class="navbar">
     <nav>
         <ul>
-            <li class="Logo"><img src="websiteLogo.png" alt="Logo"></li>
+            <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
             <li><a href="home.html">Home</a></li>
             <li><a href="index.html" class="active">Create</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="login.html">Login</a></li>
+
         </ul>
     </nav>
+    <div class="navbar-account">
+        <a href="login2.html" id="loginPage" class="auth-btn">Login</a>
+        <a href="home.html" onclick="signOutUserFromModule()" id="logOutPage" class="auth-btn">Logout</a>
+    </div>
 </header>
 
 <body>
     <div class="container">
         <!-- Left Panel - Story Settings -->
         <div class="settings-panel">
-            <div class="logo">AI Story Generator</div>
+            <div class="Logo">AI Story Generator</div>
             <div class="settings-title">Story Settings</div>
             <div class="form-group">
                 <label for="genre">Genre:</label>
@@ -430,6 +485,7 @@
                 const paragraphDiv = document.createElement('div');
                 paragraphDiv.className = 'paragraph';
                 paragraphDiv.textContent = newParagraph;
+                paragraphDiv.id = 'endText';
                 storyDiv.appendChild(paragraphDiv);
 
                 // Scroll to the bottom of the story
@@ -442,6 +498,7 @@
                 document.getElementById('continue-btn').disabled = false;
                 document.getElementById('reset-btn').disabled = false;
             }
+            endStoryFromModule();
         }
 
         function resetStory() {
@@ -472,10 +529,13 @@
     <script type="module">
         window.addStoryFromModule = addStory;
         window.continueStoryFromModule = continueStory;
+        window.endStoryFromModule = endStory;
+        window.signOutUserFromModule = signOutUser;
+        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+        import { getDatabase, ref, push, set, onValue, update } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
         const firebaseConfig = {
             databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
@@ -492,10 +552,35 @@
         const storyRef = ref(db, 'story');
         const newStoryRef = push(storyRef);
         const auth = getAuth();
-        const paragraphRef = ref(db, 'story/' + newStoryRef.key + '/paragraph');
+        const paragraphRef = ref(db, 'story/' + newStoryRef.key);
+        const user = auth.currentUser;
+        console.log(auth);
 
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(auth.currentUser);
+                document.getElementById('prompt').disabled = false;
+                document.getElementById('genre').disabled = false;
+                document.getElementById('style').disabled = false;
+                document.getElementById('type').disabled = false;
+                document.getElementById('setting').disabled = false;
+                document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+                document.getElementById('continue-btn').disabled = true;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('logOutPage').style.display = 'block';
+            } else {
+                document.getElementById('prompt').disabled = true;
+                document.getElementById('genre').disabled = true;
+                document.getElementById('style').disabled = true;
+                document.getElementById('type').disabled = true;
+                document.getElementById('setting').disabled = true;
+                document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+                document.getElementById('loginPage').style.display = 'block';
+                document.getElementById('logOutPage').style.display = 'none';
+            }
+        });
 
-
+        var previousParagraphs = "";
         function addStory() {
             set(newStoryRef, {
                 genre: document.getElementById('genre').value,
@@ -505,16 +590,44 @@
                 paragraph: document.getElementById('newText').textContent,
                 uid: auth.currentUser.uid
             });
-            //console.log(auth.currentUser.uid);
-
+            document.getElementById('newText').id = 'oldText';
+            previousParagraphs += oldText.textContent;
+            console.log(previousParagraphs);
+        }
+        function continueStory() {
+            previousParagraphs += " " + document.getElementById('newText').textContent;
+            console.log(previousParagraphs);
+            document.getElementById('newText').id = 'oldText';
+            console.log(document.getElementById('oldText').content);
+            set(newStoryRef, {
+                genre: document.getElementById('genre').value,
+                style: document.getElementById('style').value,
+                type: document.getElementById('type').value,
+                input: document.getElementById('prompt').value,
+                paragraph: previousParagraphs,
+                uid: auth.currentUser.uid
+            });
+            //push(paragraphRef, document.getElementById('newText').textContent);
+        }
+        function endStory() {
+            console
+            previousParagraphs += " " + document.getElementById('endText').textContent;
+            console.log(previousParagraphs);
+            set(newStoryRef, {
+                genre: document.getElementById('genre').value,
+                style: document.getElementById('style').value,
+                type: document.getElementById('type').value,
+                input: document.getElementById('prompt').value,
+                paragraph: previousParagraphs,
+                uid: auth.currentUser.uid
+            });
         }
 
-        function continueStory() {
-            onValue(paragraphRef, (snapshot) => {
-                const data = snapshot.val();
-                console.log(data);
-                console.log(document.getElementById('newText').textContent);
-                //updateStarCount(postElement, data);
+        function signOutUser() {
+            signOut(auth).then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
             });
         }
 

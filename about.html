@@ -12,16 +12,20 @@
 </head>
 <body>
     <header class="navbar">
-        <nav>
-            <ul>
-                <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="index.html">Create</a></li>
-                <li><a href="about.html" class="active">About</a></li>
-                <li><a href="login2.html">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav>
+        <ul>
+            <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="index.html">Create</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+
+        </ul>
+    </nav>
+    <div class="navbar-account">
+        <a href="login2.html" id="loginPage" class="auth-btn">Login</a>
+        <a href="home.html" onclick="signOutUserFromModule()" id="logOutPage" class="auth-btn">Logout</a>
+    </div>
+</header>
     <div class="section">
         <div class="container">
             <div class="section-content">
@@ -53,6 +57,46 @@
             </div>
         </div>
     </div>
-    
+    <script type="module">
+        window.signOutUserFromModule = signOutUser;
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
+            apiKey: "AIzaSyAmsfc1mzHAXLzlXBDelaXojZQ4hgoKGvo",
+            authDomain: "fbla-5997a.web.app",
+            projectId: "fbla-5997a",
+            storageBucket: "fbla-5997a.firebasestorage.app",
+            messagingSenderId: "706944120459",
+            appId: "1:706944120459:web:2cc209b960b57ffd4ec68e",
+            measurementId: "G-PY91HMPW58"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(auth.currentUser);
+                document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('logOutPage').style.display = 'block';
+            } else {
+                console.log(auth.currentUser);
+                document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+                document.getElementById('loginPage').style.display = 'block';
+                document.getElementById('logOutPage').style.display = 'none';
+            }
+        });
+
+        function signOutUser() {
+            signOut(auth).then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
+            });
+        }
+    </script>
 </body>
 </html>

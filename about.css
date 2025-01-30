@@ -183,3 +183,55 @@
 .image {
     animation: fadeIn 1s ease-in-out;
 }
+
+.navbar-account{
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    margin-left: auto; 
+    margin-bottom: 50px;
+}
+
+
+.navbar-account a{
+    margin-top: 5px;
+    padding: 5px 10px;
+    display: flex;
+    border-radius: 8px;
+    border: 2px solid #F3E9D2;
+    text-decoration: none;
+    font-size: larger;
+    color: #1A936F;
+    transition: color 0.2s;
+    box-sizing: border-box;
+    font-family: "DM Serif Text", serif;
+    font-weight: 400;
+}
+
+.navbar-account a.active{
+    color: #88D498;
+}
+
+.navbar-account a:hover{
+    color: #88D498;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.auth-btn {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    margin-left: 50%;
+}
+
+.navbar-account #logOutPage {
+    display: none;
+}
+
+.navbar-account #loginPage {
+    display: none;
+}
