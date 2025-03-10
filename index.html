@@ -607,10 +607,9 @@
                 paragraph: previousParagraphs,
                 uid: auth.currentUser.uid
             });
-            //push(paragraphRef, document.getElementById('newText').textContent);
         }
+        
         function endStory() {
-            console
             previousParagraphs += " " + document.getElementById('endText').textContent;
             console.log(previousParagraphs);
             set(newStoryRef, {
