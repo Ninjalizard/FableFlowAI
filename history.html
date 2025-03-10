@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage - Story Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap');
+
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 10;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            /* Aligns the logo and the navbar items */
+            align-items: center;
+            border-radius: 8px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            margin-top: 5px;
+            padding: 5px 10px;
+            display: flex;
+            border-radius: 8px;
+            border: 2px solid #F3E9D2;
+            text-decoration: none;
+            font-size: larger;
+            color: #1A936F;
+            transition: color 0.2s;
+            box-sizing: border-box;
+            font-family: "DM Serif Text", serif;
+            font-weight: 400;
+        }
+
+        .navbar ul li a.active {
+            color: #88D498;
+        }
+
+        .navbar ul li a:hover {
+            color: #88D498;
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar .logo img {
+            height: 50px;
+            /* Adjust the size of the logo */
+            width: auto;
+            margin-left: 40px;
+            border-radius: 8px;
+        }
+
+        .navbar-account {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            margin-left: auto;
+            margin-bottom: 50px;
+        }
+
+
+        .navbar-account a {
+            margin-top: 5px;
+            padding: 5px 10px;
+            display: flex;
+            border-radius: 8px;
+            border: 2px solid #F3E9D2;
+            text-decoration: none;
+            font-size: larger;
+            color: #1A936F;
+            transition: color 0.2s;
+            box-sizing: border-box;
+            font-family: "DM Serif Text", serif;
+            font-weight: 400;
+        }
+
+        .navbar-account a.active {
+            color: #88D498;
+        }
+
+        .navbar-account a:hover {
+            color: #88D498;
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .auth-btn {
+            position: absolute;
+            text-align: center;
+            display: flex;
+            margin-left: 50%;
+        }
+
+        .navbar-account #logOutPage {
+            display: none;
+        }
+
+        .navbar-account #loginPage {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <nav>
+            <ul>
+                <li class="logo"><img src="websiteLogo.png" alt="Logo"></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="index.html">Create</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="history.html" class="active">History</a></li>
+
+            </ul>
+        </nav>
+        <div class="navbar-account">
+            <a href="login2.html" id="loginPage" class="auth-btn">Login</a>
+            <a href="home.html" onclick="" id="logOutPage" class="auth-btn">Logout</a>
+        </div>
+    </header>
+    <div class="section">
+        <div class="container">
+            <div class="stories">
+                <div class="title">
+                    <h1>Here you can access previous stories created under your account!</h1>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        window.signOutUserFromModule = signOutUser;
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+        import { getDatabase, ref, push, set, onValue, update, get, remove, child } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
+        const firebaseConfig = {
+            databaseURL: "https://fbla-5997a-default-rtdb.firebaseio.com/",
+            apiKey: "AIzaSyAmsfc1mzHAXLzlXBDelaXojZQ4hgoKGvo",
+            authDomain: "fbla-5997a.web.app",
+            projectId: "fbla-5997a",
+            storageBucket: "fbla-5997a.firebasestorage.app",
+            messagingSenderId: "706944120459",
+            appId: "1:706944120459:web:2cc209b960b57ffd4ec68e",
+            measurementId: "G-PY91HMPW58"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const database = getDatabase();
+        var storyList = [];
+        var randIndex = [];
+
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(auth.currentUser);
+                document.querySelectorAll('button').forEach(btn => btn.disabled = false);
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('logOutPage').style.display = 'block';
+            } else {
+                console.log(auth.currentUser);
+                document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+                document.getElementById('loginPage').style.display = 'block';
+                document.getElementById('logOutPage').style.display = 'none';
+            }
+        });
+
+        function signOutUser() {
+            signOut(auth).then(() => {
+                // Sign-out successful.
+            }).catch((error) => {
+                // An error happened.
+            });
+        }
+
+        function chooseRandom() {
+            if(storyList.length < 5) {
+                var storyNums = storyList.length;
+            } else {
+                storyNums = 5;
+            }
+            for(var i = 0; i < storyNums; i++) {
+                var match = false;
+                var storyId = Math.floor(Math.random() * storyList.length);
+                while(randIndex.indexOf(storyId) > -1) {
+                    storyId = Math.floor(Math.random() * storyList.length);
+                }
+                randIndex.push(storyId);
+                console.log(storyId);
+            }
+        }
+
+        function addStories() {
+            for(var i = 0; i < 5; i++) {
+                console.log(storyList[randIndex[i]]);
+            }
+        }
+
+        const selectAllData = () => {
+            const dbRef = ref(database);
+            get(child(dbRef, 'story')).then((snapshot) => {
+                storyList = [];
+                snapshot.forEach(story =>{
+                    storyList.push(story.val());
+                });
+                console.log(storyList);
+                chooseRandom();
+                addStories();
+                displayStories();
+            })
+        }
+
+        function displayStories() {
+            for(var i = 0; i < 5; i++) {
+                console.log(storyList[i].paragraph);
+            }
+        }
+        
+
+        window.addEventListener('load', selectAllData);
+
+    </script>
+</body>
