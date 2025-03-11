@@ -124,6 +124,39 @@
         .navbar-account #loginPage {
             display: none;
         }
+
+        .storycard {
+            width: 450px;
+            height: 600px;
+            background-color: #1A936F;
+            position: absolute;
+            display: block;
+            overflow: auto;
+            border-radius: 20px;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .storycard h2 {
+            position: relative;
+            vertical-align: top;
+            text-align: center;
+            margin-top: 20px;
+            padding: 0px;
+            line-height: 100%;
+        }
+
+        .storycard p {
+            padding: 20px;
+            padding-bottom: 0px;
+            padding-top: 5px;
+            display: grid;
+            text-align: center;
+            height: auto;
+        }
     </style>
 </head>
 
@@ -146,11 +179,11 @@
     </header>
     <div class="section">
         <div class="container">
-            <div class="stories">
-                <div class="title">
-                    <h1>Here you can access previous stories created under your account!</h1>
+            <div class="storycard">
+                <div class="cardtitle">
+                    <h2>Title</h2>
                 </div>
-                
+                <p class="paragraphs" id="paragraphText"></p>
             </div>
         </div>
     </div>
@@ -200,15 +233,15 @@
         }
 
         function chooseRandom() {
-            if(storyList.length < 5) {
+            if (storyList.length < 5) {
                 var storyNums = storyList.length;
             } else {
                 storyNums = 5;
             }
-            for(var i = 0; i < storyNums; i++) {
+            for (var i = 0; i < storyNums; i++) {
                 var match = false;
                 var storyId = Math.floor(Math.random() * storyList.length);
-                while(randIndex.indexOf(storyId) > -1) {
+                while (randIndex.indexOf(storyId) > -1) {
                     storyId = Math.floor(Math.random() * storyList.length);
                 }
                 randIndex.push(storyId);
@@ -216,34 +249,30 @@
             }
         }
 
-        function addStories() {
-            for(var i = 0; i < 5; i++) {
-                console.log(storyList[randIndex[i]]);
-            }
-        }
-
         const selectAllData = () => {
             const dbRef = ref(database);
             get(child(dbRef, 'story')).then((snapshot) => {
                 storyList = [];
-                snapshot.forEach(story =>{
+                snapshot.forEach(story => {
                     storyList.push(story.val());
                 });
                 console.log(storyList);
                 chooseRandom();
-                addStories();
                 displayStories();
             })
         }
 
         function displayStories() {
-            for(var i = 0; i < 5; i++) {
+            var paragraphElement = document.getElementById("paragraphText");
+            var storyText = document.createTextNode(storyList[randIndex[0]].paragraph);
+            paragraphElement.appendChild(storyText);
+            for (var i = 0; i < 5; i++) {
+                console.log(storyList[randIndex[i]]);
                 console.log(storyList[i].paragraph);
+
             }
         }
-        
 
         window.addEventListener('load', selectAllData);
-
     </script>
 </body>
